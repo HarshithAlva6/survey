@@ -6,29 +6,40 @@ import axios from '../api/axios';
 const PatientView = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const {uniqueId} = location.state || {};
-    console.log(uniqueId, "HELLL");
+    const {patient} = location.state || {};
+    console.log(patient, "HELLL");
     const [finalSurveys, setFinalSurveys] = useState([]);
     useEffect (() => {
         const getSurveys = async() => {
-            console.log(uniqueId, typeof uniqueId);
-            const response = await axios.get(`/patients/${uniqueId}/assign-survey`);
+            const response = await axios.get(`/patients/${patient.id}/assign-survey`);
             console.log("Surveys are:", response.data);
             setFinalSurveys(response.data.allSurveys || []);
         }
         getSurveys();
     },[]);
-    const openSurvey = (id, patientId) => {
-        navigate(`/survey/${id}`,{state: {survId: id, patId: patientId} });
+    const openSurvey = (id, patient) => {
+        navigate(`/survey/${id}`,{state: {survId: id, patient: patient } });
     }
     return (
-        <div>
-            <h2>Patient ID: {uniqueId}</h2>
-            <h3>Assigned Surveys:</h3>
+        <div className="form-container">
+            <h2 className = "form-heading">{patient.name}</h2>
+            <h3 className = "form-heading">{patient.email}</h3>
+            <h3 class="form-heading">Assigned Surveys:</h3>
             {finalSurveys.length > 0 ? (
                 <ul>
                     {finalSurveys.map((survey) => (
-                        <li key={survey.id}><button onClick = {() => openSurvey(survey.id, uniqueId)}>{survey.title}</button></li>
+                        <li key={survey.id} className="inline-block m-2">
+                            <button onClick = {() => openSurvey(survey.id, patient)}
+                            className={`px-4 py-2 rounded ${
+                                survey.status === "Pending"
+                                    ? "bg-red-500 text-white animate-pulse"
+                                    : "bg-blue-500 text-white opacity-50 cursor-not-allowed"
+                            }`}
+                            disabled={survey.status !== "Pending"}
+                            >
+                                {survey.title}
+                            </button>
+                        </li>
                     ))}
                 </ul>
             ) : (

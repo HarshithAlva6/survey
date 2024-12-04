@@ -5,16 +5,14 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import FormList from './components/formList';
 import PatientView from './components/patientView';
 import SurveyEdit from './components/surveyEdit';
+import Navbar from './components/NavBar';
 
 function App() {
   return (
     <div className="App">
-      <Router>
-        <nav>
-          <a href="/formbuilder">Form Builder</a>
-          <a href="/surveys">Survey List</a>
-          <a href="/patient">Add Patient</a>
-        </nav>
+      <Router> 
+      <Navbar />
+      <div class="pt-16">
         <Routes>
           <Route path="/formbuilder" element={<FormBuild />} />
           <Route path="/surveys" element={<FormList />} />
@@ -22,6 +20,7 @@ function App() {
           <Route path="/patient/:id" element={<PatientView />} />
           <Route path="/survey/:id" element={<SurveyEdit />} />
         </Routes>
+      </div>
       </Router>
     </div>
   );

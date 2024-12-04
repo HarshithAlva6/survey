@@ -108,10 +108,10 @@ app.get('/api/patients/:id/assign-survey', (req, res) => {
         allSurveys: [],
     });
   }
-    const assignedSurveyDetails = patient.assignedSurveys.map((surveyId) =>
-        surveys.find((survey) => survey.id == surveyId))
-
-    // Return the survey details
+    const assignedSurveyDetails = patient.assignedSurveys.map(({surveyId, status}) => {
+    const survey = surveys.find((sur) => sur.id == surveyId);
+    return survey ? { ...survey, status } : null;
+  }).filter((survey) => survey !== null);
     res.status(200).json({
         message: 'Surveys retrieved successfully',
         allSurveys: assignedSurveyDetails,
@@ -141,11 +141,27 @@ app.post('/api/patients/:id/assign-survey', (req, res) => {
   if (patient.assignedSurveys.includes(surveyId)) {
     return res.status(200).json({ message: 'Survey already assigned to the patient', patient });
   }
-  patient.assignedSurveys.push(surveyId);
+  patient.assignedSurveys.push({
+    surveyId,
+    status: "Pending"});
 
   res.status(200).json({
     message: `Survey with ID ${surveyId} assigned to patient with ID ${id}`,
     patient,
+  });
+});
+
+app.patch('/api/patients/:id/assign-survey', (req, res) => {
+  const { id } = req.params; 
+  const { survId } = req.body; 
+
+  const patient = patients.find((pat) => pat.id == id);
+  const assignedSurvey = patient.assignedSurveys.find((survey) => survey.surveyId == survId);
+  assignedSurvey.status = "Completed";
+
+  res.status(200).json({
+      message: `Survey with ID ${survId} has been marked as Completed for patient with ID ${id}`,
+      patient,
   });
 });
 

@@ -20,7 +20,12 @@ const formSlice = createSlice({
                 type,
                 label: '',
                 options: type === 'multiple_choice' ? ['MCQ Option 1'] : [],
+                stars: type === 'rating_scale' ? 5 : null
             });
+        },
+        setQuestion(state, action) {
+            state.questions = action.payload; 
+            console.log(state.questions);
         },
         updateOption(state, action) {
             const { id, updates } = action.payload;
@@ -42,5 +47,5 @@ const formSlice = createSlice({
     },
 });
 
-export const { setTitle, addQuestion, updateOption, deleteQuestion, deleteAllQuestion } = formSlice.actions;
+export const { setTitle, addQuestion, setQuestion, updateOption, deleteQuestion, deleteAllQuestion } = formSlice.actions;
 export default formSlice.reducer;

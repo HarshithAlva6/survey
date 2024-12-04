@@ -27,16 +27,16 @@ const PatientList = () => {
         setEmail('');
         setError('');
         alert(response.data.message);
-        openView(response.data.patient.id);
+        openView(response.data.patient);
     };
 
-    const openView = (id) => {
-        navigate(`/patient/${id}`, { state: { uniqueId: id } });
+    const openView = (patient) => {
+        navigate(`/patient/${patient.id}`, { state: { patient: patient } });
     };
 
     return (
-        <div className="p-6 max-w-md mx-auto bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-center mb-6">Add Patient</h2>
+        <div className="form-container">
+            <h2 className="form-heading">Patient Details</h2>
             <form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -44,36 +44,36 @@ const PatientList = () => {
                 }}
                 className="space-y-4"
             >
-                {error && <p className="text-red-500 text-sm">{error}</p>}
+                {error && <p className="error-message">{error}</p>}
 
                 <div>
-                    <label htmlFor="name" className="block text-black-700 font-large">NAME</label>
+                    <label htmlFor="name" className="label">Name</label>
                     <input
                         id="name"
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Enter patient name"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="input-field"
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="email" className="block text-black-700 font-large">EMAIL</label>
+                    <label htmlFor="email" className="label">Email</label>
                     <input
                         id="email"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter patient email"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="input-field"
                     />
                 </div>
 
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 transition">
-                    Register Patient
+                    className="button">
+                    Add Patient to Register
                 </button>
             </form>
         </div>

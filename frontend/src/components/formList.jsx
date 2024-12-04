@@ -75,21 +75,24 @@ const FormList = () => {
         console.log('Survey assigned successfully:', response.data);
 
         dispatch(assignSurvey({patientId: patientId, surveyId: surveyId}));
+        const updatedResponses = await axios.get('/patients/responses');
+        console.log("Updated responses after assignment:", updatedResponses.data.data.responses);
+        setResponses(updatedResponses.data.data.responses);
         setFilteredPatients((prev) => ({
             ...prev,
             [surveyId]: []
         }));
     }
     return(
-    <div>
-        <h2>List of Surveys</h2>
+    <div className = "form-container">
+        <h2 className="form-heading">List of Surveys</h2>
         {surveys.map((survey) => (
-            <div key={survey.id} style={{border: '1px solid black', margin: '10px'}}>
-                <h4>{survey.title}</h4>
-                <p>Questions: {survey.questions.length}</p>
-                <label>Assign a Patient:</label>
+            <div className="question-card" key={survey.id} style={{border: '1px solid black', margin: '10px'}}>
+                <h4 className="form-heading">{survey.title}</h4>
+                <p className = "label">{survey.questions.length} Questions to Answer</p>
+                <label>Assign a Patient below</label>
                 <div style={{position: 'relative'}}>
-                    <input type="text"
+                    <input className="input-field" type="text"
                     placeholder="Search Patient"
                     value={searchTerm[survey.id] || ''}
                     onChange={(e) => handleSearch(e, survey.id)}
@@ -114,26 +117,23 @@ const FormList = () => {
                 </div>
             </div>
         ))}
-        <h2>Survey Responses</h2>
+        <h2 className = "form-heading">Survey Responses</h2>
         {responses ? (
         Object.entries(responses).map(([patientId, allSurveys]) => {
         const patientName = patients.find((p) => p.id == patientId).name;
-        console.log(allSurveys);
         return (
-        <div key={patientId} style={{ border: '1px solid black', margin: '10px' }}>
-            <h4>Patient: {patientName}</h4>
+        <div className="question-card" key={patientId} style={{ border: '1px solid black', margin: '10px' }}>
             {Object.entries(allSurveys).map(([surveyId, surveyData]) => {
             const surveyTitle = surveys.find((s) => s.id == surveyId).title;
-            console.log(surveyData, "No?")
             return (
-                <div key={surveyId} style={{ marginLeft: '20px' }}>
-                    <h5>Survey: {surveyTitle}</h5>
+                <div key={surveyId} className = "question-card" >
+                    <h5 className = "form-heading">{surveyTitle} - {patientName} Response</h5>
                     {surveyData.responses && Object.keys(surveyData.responses).length > 0 ? (
                     <>
                     <ul>
-                        {Object.entries(surveyData.responses).map(([questionId, answer]) => (
+                        {Object.entries(surveyData.responses).map(([questionId, {label, value}]) => (
                             <li key={questionId}>
-                                <strong>Question {questionId}:</strong> {answer}
+                                <strong>{label}: </strong> {value}
                             </li>
                         ))}
                     </ul>

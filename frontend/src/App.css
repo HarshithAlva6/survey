@@ -12,8 +12,60 @@
   }
 }
 
+/* Container for the form */
+.form-container {
+  @apply max-w-2xl mx-auto bg-gray-50 p-6 rounded-lg shadow-lg;
+}
+
+/* Heading styles */
+.form-heading {
+  @apply text-2xl font-bold text-gray-800 mb-6;
+}
+
+/* Input fields */
+.input-field {
+  @apply border border-gray-300 rounded-lg p-2 w-full my-3;
+}
+
+/* Buttons */
+.button {
+  @apply bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors;
+}
+
+.button-add {
+  @apply bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors;
+}
+
+.button-delete {
+  @apply bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors;
+}
+
+.button-save {
+  @apply bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 w-full mt-6;
+}
+
+/* Question card styles */
+.question-card {
+  @apply bg-white shadow-md rounded-lg p-4 mb-4;
+}
+
+.error-message {
+  @apply text-red-500 text-sm;
+}
+
+.label {
+  @apply block text-gray-700 font-medium;
+}
 .App {
   text-align: center;
+  background-image: url('./ps.jpg');
+  background-size: contain;
+  background-repeat: no-repeat; 
+  background-position: center; 
+  background-attachment: fixed;
+  overflow-x: hidden;
+  height: 100vh; 
+  width: 100vw;
 }
 
 
