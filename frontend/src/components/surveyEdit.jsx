@@ -11,7 +11,7 @@ const SurveyEdit = () => {
     const [questions, setQuestions] = useState([]);
     const [responses, setResponses] = useState({});
 
-    console.log(survId, patient.id, "Hello!");
+    console.log(survId, patient._id, "Hello!");
     useEffect(() => {
         const getQuestions = async() => {
             const response = await axios.get(`/surveys/${survId}`);
@@ -22,7 +22,7 @@ const SurveyEdit = () => {
     }, [survId]);
 
     const handleResponseChange = (questionId, value) => {
-        const question = questions.find((q) => q.id == questionId);
+        const question = questions.find((q) => q.id === questionId);
         setResponses((prev) => ({
             ...prev,
             [questionId]: {
@@ -32,23 +32,26 @@ const SurveyEdit = () => {
     };
     const handleSubmit = async () => {
         try {
-            console.log(responses, patient.id, survId);
-            const response = await axios.post(`/patients/${patient.id}/responses`, {responses, survId});
+            console.log(responses, patient._id, survId);
+            const response = await axios.post(`/patients/${patient._id}/responses`, {responses, survId});
             console.log("Submission successful:", response.data);
-            const final = await axios.patch(`/patients/${patient.id}/assign-survey`, {survId});
+            const final = await axios.patch(`/patients/${patient._id}/assign-survey`, {survId});
             console.log("Status updated!", final.data);
             alert("Responses submitted successfully!");
-            navigate(`/patient/${patient.id}`, { state: { patient: patient } });
+            navigate(`/patient/${patient._id}`, { state: { patient: patient } });
         } catch (error) {
             console.error("Error submitting responses:", error);
             alert("Failed to submit responses. Please try again.");
         }
     };
+    console.log(questions);
     return(
     <>
     {questions.length > 0 ? (
         <>
-            {questions.map((question) => (
+            {questions.map((question) => {
+                console.log(question.id);
+            return(
                 <div key={question.id} className="mb-10 form-container"
                 style = {{display: 'flex-row', justifyContent: 'center', alignItems: 'center'}}>
                     <h1 class="form-heading">{question.label}</h1>
@@ -59,9 +62,9 @@ const SurveyEdit = () => {
                                     <label class="label">
                                         <input
                                         type="radio"
-                                        value={index}
-                                        checked={responses[question.id]?.value === index}
-                                        onChange = {()=> handleResponseChange(question.id, index)} />
+                                        value={option}
+                                        checked={responses[question.id]?.value === option}
+                                        onChange = {()=> handleResponseChange(question.id, option)} />
                                         {option} 
                                     </label>
                                 </li>
@@ -94,7 +97,7 @@ const SurveyEdit = () => {
                         <p>Unsupported question type</p>
                     )}
                 </div>
-            ))}
+            )})}
             <button onClick={handleSubmit} className="mt-5">
                 Submit Responses
             </button>

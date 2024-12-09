@@ -7,11 +7,10 @@ const PatientView = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const {patient} = location.state || {};
-    console.log(patient, "HELLL");
     const [finalSurveys, setFinalSurveys] = useState([]);
     useEffect (() => {
         const getSurveys = async() => {
-            const response = await axios.get(`/patients/${patient.id}/assign-survey`);
+            const response = await axios.get(`/patients/${patient._id}/assign-survey`);
             console.log("Surveys are:", response.data);
             setFinalSurveys(response.data.allSurveys || []);
         }
@@ -28,8 +27,8 @@ const PatientView = () => {
             {finalSurveys.length > 0 ? (
                 <ul>
                     {finalSurveys.map((survey) => (
-                        <li key={survey.id} className="inline-block m-2">
-                            <button onClick = {() => openSurvey(survey.id, patient)}
+                        <li key={survey._id} className="inline-block m-2">
+                            <button onClick = {() => openSurvey(survey._id, patient)}
                             className={`px-4 py-2 rounded ${
                                 survey.status === "Pending"
                                     ? "bg-red-500 text-white animate-pulse"

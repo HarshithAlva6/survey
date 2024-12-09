@@ -71,6 +71,7 @@ const FormList = () => {
     };
 
     const handleSelect = async(surveyId, patientId) => {
+        console.log(filteredPatients, surveys)
         const response = await axios.post(`/patients/${patientId}/assign-survey`, { surveyId });
         console.log('Survey assigned successfully:', response.data);
 
@@ -87,17 +88,17 @@ const FormList = () => {
     <div className = "form-container">
         <h2 className="form-heading">List of Surveys</h2>
         {surveys.map((survey) => (
-            <div className="question-card" key={survey.id} style={{border: '1px solid black', margin: '10px'}}>
+            <div className="question-card" key={survey._id} style={{border: '1px solid black'}}>
                 <h4 className="form-heading">{survey.title}</h4>
                 <p className = "label">{survey.questions.length} Questions to Answer</p>
                 <label>Assign a Patient below</label>
                 <div style={{position: 'relative'}}>
                     <input className="input-field" type="text"
                     placeholder="Search Patient"
-                    value={searchTerm[survey.id] || ''}
-                    onChange={(e) => handleSearch(e, survey.id)}
+                    value={searchTerm[survey._id] || ''}
+                    onChange={(e) => handleSearch(e, survey._id)}
                     style={{width: '100%'}}/>
-                {searchTerm[survey.id] && filteredPatients[survey.id]?.length > 0 && (
+                {searchTerm[survey._id] && filteredPatients[survey._id]?.length > 0 && (
                     <ul style={{
                         position: 'absolute',
                         background: '#fff',
@@ -106,9 +107,9 @@ const FormList = () => {
                         margin: 0,
                         padding: 0,
                     }}>
-                        {filteredPatients[survey.id].map((patient, index) => (
+                        {filteredPatients[survey._id].map((patient, index) => (
                             <li key={index}
-                            onClick={() => handleSelect(survey.id, patient.id)}
+                            onClick={() => handleSelect(survey._id, patient._id)}
                             style = {{padding: '5px', cursor: 'pointer'}}
                             >{patient.name}</li>
                         ))}
@@ -119,28 +120,36 @@ const FormList = () => {
         ))}
         <h2 className = "form-heading">Survey Responses</h2>
         {responses ? (
-        Object.entries(responses).map(([patientId, allSurveys]) => {
-        const patientName = patients.find((p) => p.id == patientId).name;
+        Object.entries(responses).map(([responseKey, allSurveys]) => {    
         return (
-        <div className="question-card" key={patientId} style={{ border: '1px solid black', margin: '10px' }}>
-            {Object.entries(allSurveys).map(([surveyId, surveyData]) => {
-            const surveyTitle = surveys.find((s) => s.id == surveyId).title;
+        <div className="question-card" key={responseKey} style={{ border: '1px solid black', margin: '10px' }}>
+            {Object.entries(allSurveys.finalRes).map(([patientId, surveyData]) => {
+            const patientName = patients.find((p) => String(p._id) === String(patientId))?.name;
+            const surveyTitle = surveys.find((s) => String(s._id) === String(surveyData.surveyId))?.title;
+            console.log("SurveyTit", surveyTitle);
+            console.log(allSurveys.finalRes, surveys, patientName);
             return (
-                <div key={surveyId} className = "question-card" >
-                    <h5 className = "form-heading">{surveyTitle} - {patientName} Response</h5>
-                    {surveyData.responses && Object.keys(surveyData.responses).length > 0 ? (
-                    <>
-                    <ul>
-                        {Object.entries(surveyData.responses).map(([questionId, {label, value}]) => (
-                            <li key={questionId}>
-                                <strong>{label}: </strong> {value}
-                            </li>
-                        ))}
-                    </ul>
-                    <p className="text-green-500 font-bold">Completed</p>
-                    </>
-                    ):(
-                        <p className="text-red-500 font-bold">Pending</p>
+                <div key={surveyData.surveyId}
+                    className={`p-6 rounded-lg shadow-md mb-6 ${
+                        surveyData.responses && Object.keys(surveyData.responses).length > 0 && !surveyData.responses?.placeholder
+                            ? 'bg-green-50 border-green-400'
+                            : 'bg-red-50 border-red-400'}`}>
+                <h5 className="text-xl font-bold mb-4">{surveyTitle} - {patientName}'s Response</h5>
+                    {surveyData.responses && Object.keys(surveyData.responses).length > 0 && !surveyData.responses?.placeholder ? (
+                        <>
+                            <ul className="space-y-3">
+                                {Object.entries(surveyData.responses).map(([questionId, { label, value }]) => (
+                                    <li key={questionId}
+                                        className="p-4 bg-white rounded-lg shadow-sm">
+                                        <strong className="block text-gray-700">{label}:</strong>
+                                        <span className="text-gray-900">{value}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                            <p className="mt-4 text-green-600 font-bold text-center">Completed</p>
+                        </>
+                    ) : (
+                        <p className="mt-4 text-red-600 font-bold text-center">Pending</p>
                     )}
                 </div>
             )})}

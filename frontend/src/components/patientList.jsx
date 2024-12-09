@@ -31,7 +31,7 @@ const PatientList = () => {
     };
 
     const openView = (patient) => {
-        navigate(`/patient/${patient.id}`, { state: { patient: patient } });
+        navigate(`/patient/${patient._id}`, { state: { patient: patient } });
     };
 
     return (

@@ -131,8 +131,9 @@ const FormBuild = () => {
     const { title, questions } = useSelector((state) => state.form);
     
     const moveQuestion = (dragIndex, hoverIndex) => {
-        const updatedQuestions = [...questions];
-        const [movedItem] = updatedQuestions.splice(dragIndex, 1);
+        const updatedQuestions = questions.flat();
+        const movedItem = updatedQuestions[dragIndex];
+        updatedQuestions.splice(dragIndex, 1);
         updatedQuestions.splice(hoverIndex, 0, movedItem);
         dispatch(setQuestion(updatedQuestions))
     
