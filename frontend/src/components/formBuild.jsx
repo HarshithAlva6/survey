@@ -148,7 +148,7 @@ const FormBuild = () => {
         }
         const response = await axios.post('/surveys', { title, questions });
         console.log('Survey saved successfully:', response.data);
-        alert('Survey Saved!');
+        alert(response.data.message);
         dispatch(deleteAllQuestion());
     }
 

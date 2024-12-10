@@ -7,7 +7,6 @@ import axios from '../api/axios';
 const FormList = () => {
     const dispatch = useDispatch();
     const patients = useSelector((state) => state.patients.patients);
-    console.log("HERE!!!!!", patients);
     const assignedSurveys = useSelector((state) => state.patients.assignedSurveys);
     const [surveys, setSurveys] = useState([]);
     const [searchTerm, setSearchTerm] = useState({});
@@ -73,7 +72,7 @@ const FormList = () => {
     const handleSelect = async(surveyId, patientId) => {
         console.log(filteredPatients, surveys)
         const response = await axios.post(`/patients/${patientId}/assign-survey`, { surveyId });
-        console.log('Survey assigned successfully:', response.data);
+        alert(response.data.message);
 
         dispatch(assignSurvey({patientId: patientId, surveyId: surveyId}));
         const updatedResponses = await axios.get('/patients/responses');

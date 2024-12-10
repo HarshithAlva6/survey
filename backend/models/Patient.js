@@ -5,7 +5,7 @@ const PatientSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     assignedSurveys: [
         {
-            surveyId: { type: mongoose.Schema.Types.ObjectId, ref: 'Survey', required: true },
+            surveyId: { type: String, ref: 'Survey', required: true },
             status: { type: String, enum: ['Pending', 'Completed'], default: 'Pending' },
         },
     ],

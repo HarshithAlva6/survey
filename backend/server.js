@@ -47,13 +47,20 @@ res.status(200).json(survey);
 app.post('/api/surveys', async (req, res) => {
   const { title, questions } = req.body; 
   //const surId = surveys.length + 1;
+  const existingSurvey = await Survey.findOne({ title });
+
+  if (existingSurvey) {
+    return res.status(200).json({
+      message: 'A survey with this title already exists.',
+    });
+  }
   const newSurveys = new Survey({title, questions});
   await newSurveys.save();
   //const newSurveys = {id: surId.toString(), title, questions};
   //surveys.push(newSurveys);
   console.log('Received Survey Data:', newSurveys );
   res.status(201).json({
-      message: 'Survey received successfully!',
+      message: 'Survey saved successfully!',
       survey: newSurveys,
   });
 });
@@ -147,14 +154,15 @@ app.post('/api/patients/:id/assign-survey', async (req, res) => {
   if (!patient) {
     return res.status(404).json({ error: 'Patient not found' });
   }
+  const patientName = patient.name;
 
   //const survey = surveys.find((sur) => sur.id == surveyId);
   const survey = await Survey.findById(surveyId);
   if (!survey) {
     return res.status(404).json({ error: 'Survey not found' });
   }
-
-  if (patient.assignedSurveys.includes(surveyId)) {
+  const surveyTitle = survey.title;
+  if (patient.assignedSurveys.some((entry) => entry.surveyId === surveyId)) {
     return res.status(200).json({ message: 'Survey already assigned to the patient', patient });
   }
   patient.assignedSurveys.push({
@@ -171,13 +179,9 @@ app.post('/api/patients/:id/assign-survey', async (req, res) => {
   });
   
   await newResponse.save();
-  
-  // Log the saved document
-  console.log("Saved Document:", await Response.findById(newResponse._id));
-  
 
   res.status(200).json({
-    message: `Survey with ID ${surveyId} assigned to patient with ID ${id}`,
+    message: `${surveyTitle} Survey has been assigned to patient ${patientName}`,
     data: newResponse
   });
 });
