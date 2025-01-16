@@ -141,7 +141,6 @@ const FormBuild = () => {
       };
 
     const handleSurvey = async() => {
-        console.log(title, questions);
         if (!title || questions.some((q) => !q.label)) {
           alert("Survey Title or MCQ Questions missing");
           return;
@@ -162,10 +161,10 @@ const FormBuild = () => {
         value={title}
         onChange = {(e) => dispatch(setTitle(e.target.value))}
         />
-        <div className="flex space-x-4 mb-4">
-            <button className = "button-add" onClick = {() => dispatch(addQuestion('multiple_choice'))}>Add Multiple Choice Option</button>
-            <button className = "button-add" onClick = {() => dispatch(addQuestion('short_answer'))}>Add Short Answer Option</button>
-            <button className = "button-add" onClick = {() => dispatch(addQuestion('rating_scale'))}>Add Rating Scale Option</button>
+        <div className="flex space-x-8 m-4 justify-center">
+            <button className = "button-add" onClick = {() => dispatch(addQuestion('multiple_choice'))}>Multiple Choice</button>
+            <button className = "button-add" onClick = {() => dispatch(addQuestion('short_answer'))}>Short Answer</button>
+            <button className = "button-add" onClick = {() => dispatch(addQuestion('rating_scale'))}>Rating Scale</button>
         </div>
         <ul>
             {questions.map((q, index) => (

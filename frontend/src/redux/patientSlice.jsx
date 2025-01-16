@@ -20,7 +20,6 @@ const patientSlice = createSlice({
         },
         setPatients(state, action) {
             state.patients = action.payload; 
-            console.log(state.patients);
         },
         assignSurvey(state, action) {
             const { patientId, surveyId } = action.payload;

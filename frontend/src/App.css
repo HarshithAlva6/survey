@@ -45,7 +45,7 @@ button {
 }
 
 .button-save {
-  @apply bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 w-full mt-6;
+  @apply bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition duration-200 ease-in-out shadow-md w-full mt-6;
 }
 
 /* Question card styles */

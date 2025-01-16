@@ -42,7 +42,6 @@ const FormList = () => {
         const fetchResponses = async() => {
             try {
                 const response = await axios.get('/patients/responses');
-                console.log("All responses", response.data.data.responses);
                 setResponses(response.data.data.responses);
             } catch(error) {
                 if (error.response && error.response.status === 404) {
@@ -70,7 +69,6 @@ const FormList = () => {
     };
 
     const handleSelect = async(surveyId, patientId) => {
-        console.log(filteredPatients, surveys)
         const response = await axios.post(`/patients/${patientId}/assign-survey`, { surveyId });
         alert(response.data.message);
 
