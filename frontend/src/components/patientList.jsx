@@ -73,7 +73,7 @@ const PatientList = () => {
                 <button
                     type="submit"
                     className="button">
-                    Add Patient to Register
+                    Log In / Register
                 </button>
             </form>
         </div>

@@ -84,7 +84,8 @@ const FormList = () => {
         }));
     }
     return(
-    <div className = "form-container">
+    <div className = "form-container2" style={{ display: 'flex', gap: '20px' }}>
+        <div style={{ flex: 1 }}>
         <h2 className="form-heading">List of Surveys</h2>
         {surveys.map((survey) => (
             <div className="question-card" key={survey._id} style={{border: '1px solid black'}}>
@@ -117,6 +118,8 @@ const FormList = () => {
                 </div>
             </div>
         ))}
+        </div>
+        <div style={{ flex: 1 }}>
         <h2 className = "form-heading">Survey Responses</h2>
         {responses ? (
         Object.entries(responses).map(([responseKey, allSurveys]) => {    
@@ -157,6 +160,7 @@ const FormList = () => {
         ) : (
             <p>No responses available yet.</p>
         )}
+        </div>
         </div>
     );
 }

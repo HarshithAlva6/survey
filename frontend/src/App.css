@@ -17,6 +17,9 @@
   @apply max-w-2xl mx-auto bg-gray-50 p-6 rounded-lg shadow-lg;
 }
 
+.form-container2 {
+  @apply max-w-full mx-auto bg-gray-50 p-6 rounded-lg shadow-lg;
+}
 /* Heading styles */
 .form-heading {
   @apply text-2xl font-bold text-gray-800 mb-6;
@@ -32,9 +35,10 @@
   @apply bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors;
 }
 
-.button-add {
-  @apply bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors;
+button {
+  @apply px-6 py-2 bg-amber-500 text-white border border-amber-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-300 transition duration-300 ease-in-out hover:bg-amber-600 hover:border-amber-700;
 }
+
 
 .button-delete {
   @apply bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors;
