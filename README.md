@@ -20,8 +20,7 @@ The assigned survey should appear under the patient's login page for them to wor
 Create and use a database schema under MongoDB Atlas that supports the dynamic nature of surveys and their responses.
 Once patients complete the survey, their responses should be stored and accessible to the physician. This is handled in the same page where the surveys can be assigned.
 
-Assessment Focus:
 
-•	UI/UX design skills for creating a form builder.
-•	Ability to structure dynamic forms and handle multiple input types.
-•	Front-end and back-end integration for saving and managing custom survey data.
+How to run -
+cd backend -> node server.js
+cd frontend -> npm start
