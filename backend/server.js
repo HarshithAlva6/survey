@@ -18,8 +18,9 @@ mongoose.connect(mongoURI)
 app.use(express.json());
 //app.use(cors());
 app.use(cors({
-  origin: 'https://survey-liart-two.vercel.app',  // Replace with your frontend's URL
-  credentials: true,
+  origin: 'https://survey-liart-two.vercel.app', // Allow only your frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.get('/', (req, res) => {
