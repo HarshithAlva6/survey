@@ -16,7 +16,11 @@ mongoose.connect(mongoURI)
   .catch((err) => console.error('Error connecting to MongoDB:', err));
   
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
+app.use(cors({
+  origin: 'https://survey-liart-two.vercel.app',  // Replace with your frontend's URL
+  credentials: true,
+}));
 
 app.get('/', (req, res) => {
     res.send('Welcome to the homepage!');
