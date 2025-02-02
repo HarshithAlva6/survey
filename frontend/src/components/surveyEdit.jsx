@@ -11,11 +11,9 @@ const SurveyEdit = () => {
     const [questions, setQuestions] = useState([]);
     const [responses, setResponses] = useState({});
 
-    console.log(survId, patient._id, "Hello!");
     useEffect(() => {
         const getQuestions = async() => {
             const response = await axios.get(`/surveys/${survId}`);
-            console.log(response.data);
             setQuestions(response.data.questions || []);
         }
         getQuestions();
@@ -32,11 +30,8 @@ const SurveyEdit = () => {
     };
     const handleSubmit = async () => {
         try {
-            console.log(responses, patient._id, survId);
             const response = await axios.post(`/patients/${patient._id}/responses`, {responses, survId});
-            console.log("Submission successful:", response.data);
             const final = await axios.patch(`/patients/${patient._id}/assign-survey`, {survId});
-            console.log("Status updated!", final.data);
             alert("Responses submitted successfully!");
             navigate(`/patient/${patient._id}`, { state: { patient: patient } });
         } catch (error) {
@@ -44,13 +39,11 @@ const SurveyEdit = () => {
             alert("Failed to submit responses. Please try again.");
         }
     };
-    console.log(questions);
     return(
     <>
     {questions.length > 0 ? (
         <>
             {questions.map((question) => {
-                console.log(question.id);
             return(
                 <div key={question.id} className="mb-10 form-container"
                 style = {{display: 'flex-row', justifyContent: 'center', alignItems: 'center'}}>

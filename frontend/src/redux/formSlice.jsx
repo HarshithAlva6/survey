@@ -25,7 +25,6 @@ const formSlice = createSlice({
         },
         setQuestion(state, action) {
             state.questions = action.payload; 
-            console.log(state.questions);
         },
         updateOption(state, action) {
             const { id, updates } = action.payload;

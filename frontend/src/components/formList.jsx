@@ -16,7 +16,6 @@ const FormList = () => {
         const fetchSurveys = async() => {
             try {
                 const response = await axios.get('/surveys');
-                console.log('All Surveys:', response.data);
                 setSurveys(response.data);
             } catch (error) {
                 console.error('Error fetching surveys:', error);
@@ -25,7 +24,6 @@ const FormList = () => {
         const fetchPatients = async() => {
             try {
                 const response = await axios.get('/patients');
-                console.log('All Patients:', response.data);
                 dispatch(setPatients(response.data || []));
                 setFilteredPatients(response.data || []);
             } catch (error) {
@@ -65,7 +63,6 @@ const FormList = () => {
                 patient.name.toLowerCase().startsWith(term.toLowerCase())
             ),
         }));
-        console.log(assignedSurveys, patients);
     };
 
     const handleSelect = async(surveyId, patientId) => {
@@ -74,7 +71,6 @@ const FormList = () => {
 
         dispatch(assignSurvey({patientId: patientId, surveyId: surveyId}));
         const updatedResponses = await axios.get('/patients/responses');
-        console.log("Updated responses after assignment:", updatedResponses.data.data.responses);
         setResponses(updatedResponses.data.data.responses);
         setFilteredPatients((prev) => ({
             ...prev,
@@ -126,8 +122,6 @@ const FormList = () => {
             {Object.entries(allSurveys.finalRes).map(([patientId, surveyData]) => {
             const patientName = patients.find((p) => String(p._id) === String(patientId))?.name;
             const surveyTitle = surveys.find((s) => String(s._id) === String(surveyData.surveyId))?.title;
-            console.log("SurveyTit", surveyTitle);
-            console.log(allSurveys.finalRes, surveys, patientName);
             return (
                 <div key={surveyData.surveyId}
                     className={`p-6 rounded-lg shadow-md mb-6 ${

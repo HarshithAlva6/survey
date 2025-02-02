@@ -11,7 +11,6 @@ const PatientView = () => {
     useEffect (() => {
         const getSurveys = async() => {
             const response = await axios.get(`/patients/${patient._id}/assign-survey`);
-            console.log("Surveys are:", response.data);
             setFinalSurveys(response.data.allSurveys || []);
         }
         getSurveys();

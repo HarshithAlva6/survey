@@ -21,7 +21,6 @@ const PatientList = () => {
         // Dispatch action to Redux store
         await dispatch(addPatient({ name, email }));
         const response = await axios.post("/patients", { name, email});
-        console.log("Patient response recieved", response.data.patient);
         // Reset form and error state
         setName('');
         setEmail('');
